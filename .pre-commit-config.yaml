@@ -9,11 +9,8 @@
     - id: double-quote-string-fixer
     - id: end-of-file-fixer
     - id: flake8
-      args: [--max-line-length=120]
-      excludes:
-        - blog/
-        - main/
-        - manage.py
+      exclude: '[main/, manage.py, blog/]'
+      # args: [--max-line-length=120]
     - id: name-tests-test
     - id: requirements-txt-fixer
     - id: trailing-whitespace
@@ -22,7 +19,4 @@
   sha: master
   hooks:
     - id: pep257
-      excludes:
-        - blog/
-        - main/
-        - manage.py
+      exclude: '[main/, manage.py, blog/]'
