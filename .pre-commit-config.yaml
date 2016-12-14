@@ -9,14 +9,19 @@
     - id: double-quote-string-fixer
     - id: end-of-file-fixer
     - id: flake8
-      exclude: '[main/, manage.py, blog/]'
-      # args: [--max-line-length=120]
+      exclude: main/migrations
+      args: [--max-line-length=120]
     - id: name-tests-test
     - id: requirements-txt-fixer
     - id: trailing-whitespace
 
-- repo: https://github.com/FalconSocial/pre-commit-mirrors-pep257
+# - repo: https://github.com/FalconSocial/pre-commit-mirrors-pep257
+#   sha: master
+#   hooks:
+#     - id: pep257
+#       exclude: main/migrations
+
+- repo: git://github.com/Lucas-C/pre-commit-hooks
   sha: master
   hooks:
-    - id: pep257
-      exclude: '[main/, manage.py, blog/]'
+    - id: remove-tabs

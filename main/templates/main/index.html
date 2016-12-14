@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Main</title>
+    <title>Main</title>
 </head>
 <body>
-	{% for post in posts %}
+{% for post in posts %}
     <div>
         <p>published: {{ post.published_date }}</p>
         <h1><a href="">{{ post.title }}</a></h1>
-        <p>{{ post.text|linebreaksbr }}</p>
+        <p>{{ post.text | linebreaksbr }}</p>
     </div>
 {% endfor %}
 </body>
