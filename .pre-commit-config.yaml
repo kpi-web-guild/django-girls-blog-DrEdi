@@ -15,11 +15,12 @@
     - id: requirements-txt-fixer
     - id: trailing-whitespace
 
-# - repo: https://github.com/FalconSocial/pre-commit-mirrors-pep257
-#   sha: master
-#   hooks:
-#     - id: pep257
-#       exclude: main/migrations
+- repo: https://github.com/FalconSocial/pre-commit-mirrors-pep257
+  sha: master
+  hooks:
+    - id: pep257
+      args: [--ignore=D100]
+      exclude: main/migrations
 
 - repo: git://github.com/Lucas-C/pre-commit-hooks
   sha: master
