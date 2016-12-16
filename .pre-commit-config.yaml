@@ -19,7 +19,7 @@
   sha: master
   hooks:
     - id: pep257
-      args: [--ignore=D100]
+      args: [--ignore=D203]
       exclude: main/migrations
 
 - repo: git://github.com/Lucas-C/pre-commit-hooks

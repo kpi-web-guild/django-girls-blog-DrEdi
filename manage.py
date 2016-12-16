@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+"""Main file for manage your project."""
 import os
 import sys
 
