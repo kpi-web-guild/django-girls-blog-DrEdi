@@ -1,12 +1,10 @@
-"""All models are here."""
+"""Models for your project are located here."""
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
-
 
 class Post(models.Model):
-    """Model that represent post in our blog."""
+    """Model that represents post in our blog."""
 
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
@@ -20,5 +18,8 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        """Return title of post."""
+        """Return title of Post.
+
+        This is useful if you need to get info only about title of Post object
+        """
         return self.title

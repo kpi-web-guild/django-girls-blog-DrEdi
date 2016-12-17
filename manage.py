@@ -1,4 +1,4 @@
-"""Main file for manage your project."""
+"""Management of project."""
 import os
 import sys
 

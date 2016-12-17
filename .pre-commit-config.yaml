@@ -19,6 +19,7 @@
   sha: master
   hooks:
     - id: pep257
+      # There's a conflict with D211
       args: [--ignore=D203]
       exclude: main/migrations
 
