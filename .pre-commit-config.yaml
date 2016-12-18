@@ -9,6 +9,8 @@
     - id: double-quote-string-fixer
     - id: end-of-file-fixer
     - id: flake8
+      exclude: main/migrations
+      args: [--max-line-length=120]
     - id: name-tests-test
     - id: requirements-txt-fixer
     - id: trailing-whitespace
@@ -17,3 +19,11 @@
   sha: master
   hooks:
     - id: pep257
+      # There's a conflict with D211
+      args: [--ignore=D203]
+      exclude: main/migrations
+
+- repo: git://github.com/Lucas-C/pre-commit-hooks
+  sha: master
+  hooks:
+    - id: remove-tabs
