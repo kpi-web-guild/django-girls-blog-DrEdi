@@ -1,6 +1,7 @@
 """All views are here."""
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
+from .forms import PostForm
 
 
 def post_list(request):
@@ -13,3 +14,32 @@ def post_detail(request, pk):
     """Show info about one post you have chosen."""
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'main/post_detail.html', {'post': post})
+
+
+def post_new(request):
+    """Return page for adding new Post."""
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm()
+    return render(request, 'main/post_edit.html', {'form': form})
+
+
+def post_edit(request, pk):
+    """View is for editing post."""
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'main/post_edit.html', {'form': form})
