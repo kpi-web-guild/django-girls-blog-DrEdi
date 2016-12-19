@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from .forms import PostForm
+from django.contrib.auth.decorators import login_required
 
 
 def post_list(request):
@@ -30,6 +31,7 @@ def post_new(request):
     return render(request, 'main/post_edit.html', {'form': form})
 
 
+@login_required
 def post_edit(request, pk):
     """View is for editing post."""
     post = get_object_or_404(Post, pk=pk)
@@ -43,3 +45,26 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'main/post_edit.html', {'form': form})
+
+
+@login_required
+def post_draft_list(request):
+    """Return draft list."""
+    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+    return render(request, 'main/post_draft_list.html', {'posts': posts})
+
+
+@login_required
+def post_publish(request, pk):
+    """View for publishing post."""
+    post = get_object_or_404(Post, pk=pk)
+    post.publish()
+    return redirect('post_detail', pk=pk)
+
+
+@login_required
+def post_remove(request, pk):
+    """View for deleting posts."""
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('post_list')
