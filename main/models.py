@@ -20,7 +20,7 @@ class Post(models.Model):
     def __str__(self):
         """Return title of Post.
 
-        This is useful if you need to get info only about title of Post object
+        This is used when rendering model instance as a string
         """
         return self.title
 
