@@ -71,7 +71,7 @@ def post_remove(request, pk):
 
 
 def add_comment_to_post(request, pk):
-    """If someone want to create new comment he/she get this view."""
+    """If someone wants to create new comment he/she get this view."""
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST)

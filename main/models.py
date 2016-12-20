@@ -44,5 +44,5 @@ class Comment(models.Model):
         self.save()
 
     def __str__(self):
-        """Return comment text."""
+        """Render Comment instance as it's text by default when stringifying."""
         return self.text
