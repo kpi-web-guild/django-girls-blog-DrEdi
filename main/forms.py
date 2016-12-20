@@ -1,4 +1,8 @@
-"""This module is for python forms."""
+"""This module contains classes that represent Forms.
+
+It's easier to use built-in forms because you don't need to think about
+connection with DB, SQL query etc. Just write FormModel and views for it
+"""
 from django import forms
 from .models import Post, Comment
 
