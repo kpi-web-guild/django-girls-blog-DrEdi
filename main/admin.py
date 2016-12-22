@@ -5,6 +5,7 @@ You can register it or if you want change some setting, hot to show
 what info you want to see on display about this model
 """
 from django.contrib import admin
-from .models import Post
+from .models import Post, Comment
 
 admin.site.register(Post)
+admin.site.register(Comment)

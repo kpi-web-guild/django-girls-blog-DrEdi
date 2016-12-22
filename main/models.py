@@ -20,6 +20,29 @@ class Post(models.Model):
     def __str__(self):
         """Return title of Post.
 
-        This is useful if you need to get info only about title of Post object
+        This is used when rendering model instance as a string
         """
         return self.title
+
+    def approved_comments(self):
+        """Approving comments. Use for moderating."""
+        return self.comments.filter(approved_comment=True)
+
+
+class Comment(models.Model):
+    """Model for comments."""
+
+    post = models.ForeignKey('main.Post', related_name='comments')
+    author = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    approved_comment = models.BooleanField(default=False)
+
+    def approve(self):
+        """Approve comment and save it in DB."""
+        self.approved_comment = True
+        self.save()
+
+    def __str__(self):
+        """Render Comment instance as its text by default when stringifying."""
+        return self.text
