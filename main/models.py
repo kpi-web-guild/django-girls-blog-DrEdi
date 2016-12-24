@@ -24,6 +24,7 @@ class Post(models.Model):
         """
         return self.title
 
+    @property
     def approved_comments(self):
         """Show comments that are ok in user's opinion."""
         return self.comments.filter(approved_comment=True)
