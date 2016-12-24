@@ -25,8 +25,8 @@ class Post(models.Model):
         return self.title
 
     def approved_comments(self):
-        """Will show comments that are ok in your opinion."""
-        return self.comments.get_approved()
+        """Show comments that are ok in user's opinion."""
+        return self.comments.filter(approved_comment=True)
 
 
 class Comment(models.Model):
@@ -46,7 +46,3 @@ class Comment(models.Model):
     def __str__(self):
         """Render Comment instance as its text by default when stringifying."""
         return self.text
-
-    def get_approved(self):
-        """Return comment if it is approved by the host."""
-        return self if self.is_approved is True else None
