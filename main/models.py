@@ -24,8 +24,9 @@ class Post(models.Model):
         """
         return self.title
 
+    @property
     def approved_comments(self):
-        """Approving comments. Use for moderating."""
+        """Show comments that are ok in user's opinion."""
         return self.comments.filter(approved_comment=True)
 
 
@@ -36,11 +37,11 @@ class Comment(models.Model):
     author = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
-    approved_comment = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
 
     def approve(self):
         """Approve comment and save it in DB."""
-        self.approved_comment = True
+        self.is_approved = True
         self.save()
 
     def __str__(self):
