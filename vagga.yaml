@@ -1,0 +1,28 @@
+containers:
+  pip-freeze:
+    setup:
+      - !Alpine v3.4
+      - !PipConfig
+        dependencies: true
+      - !Py3Install
+        - pip
+        - Django
+        - gunicorn
+        - whitenoise
+        - django-environ
+      - !Sh pip freeze > requirements.txt
+  django:
+    environ:
+      DATABASE_URL: sqlite:///db.sqlite3
+    setup:
+      - !Alpine v3.4
+      - !Py3Requirements requirements.txt
+commands:
+  run: !Command
+    description: Start server
+    container: django
+    run: python3 manage.py runserver
+  manage.py: !Command
+    description: Shortcut to manage.py
+    container: django
+    run: [python3, manage.py]
