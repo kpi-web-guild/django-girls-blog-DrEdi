@@ -1,5 +1,4 @@
-Django==1.10.4
+Django==1.9.12
 django-environ==0.4.1
-gunicorn==19.6.0
-six==1.10.0
-whitenoise==3.2.2
+gunicorn==19.5.0
+whitenoise==3.2.3

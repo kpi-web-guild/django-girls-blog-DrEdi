@@ -2,20 +2,18 @@ containers:
   pip-freeze:
     setup:
       - !Alpine v3.4
-      - !PipConfig
-        dependencies: true
       - !Py3Install
         - pip
-        - Django
-        - gunicorn
-        - whitenoise
-        - django-environ
+        - 'Django >=1.9,<1.10'
+        - 'gunicorn >=19.5,<19.6'
+        - 'whitenoise >=3.2,<3.3'
+        - 'django-environ >=0.4,<0.5'
       - !Sh pip freeze > requirements.txt
   django:
-    environ:
-      DATABASE_URL: sqlite:///db.sqlite3
     setup:
       - !Alpine v3.4
+      - !PipConfig
+        dependencies: true
       - !Py3Requirements requirements.txt
 commands:
   run: !Command

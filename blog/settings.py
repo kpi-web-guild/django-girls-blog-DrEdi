@@ -1,22 +1,22 @@
 """Django settings for blog project."""
 
-import os
 import environ
 
-env = environ.Env()
-
+env = environ.Env(DEBUG=(bool, False),)
+root = environ.Path(__file__) - 3
+environ.Env.read_env()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = root()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u1^ao$3(lwk%g+i6+_)-e(1-f%^56dqq&0$*zlugavt!=es@r4'
+SECRET_KEY = env('SECRET_KEY', default='u1^ao$3(lwk%g+i6+_)-e(1-f%^56dqq&0$*zlugavt!=es@r4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -68,7 +68,7 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    'default':  env.db()
+    'default':  env.db(default='sqlite:///db.sqlite3'),
 }
 
 
@@ -109,8 +109,10 @@ LOGIN_REDIRECT_URL = '/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+public_root = root.path('public/')
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = public_root('static')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
