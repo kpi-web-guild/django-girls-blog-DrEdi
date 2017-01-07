@@ -3,6 +3,7 @@
   hooks:
     - id: check-ast
     - id: check-yaml
+      exclude: vagga.yaml
     - id: check-merge-conflict
     - id: check-docstring-first
     - id: debug-statements

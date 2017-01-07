@@ -1,0 +1,26 @@
+containers:
+  pip-freeze:
+    setup:
+      - !Alpine v3.4
+      - !Py3Install
+        - pip
+        - 'Django >=1.9,<1.10'
+        - 'gunicorn >=19.5,<19.6'
+        - 'whitenoise >=3.2,<3.3'
+        - 'django-environ >=0.4,<0.5'
+      - !Sh pip freeze > requirements.txt
+  django:
+    setup:
+      - !Alpine v3.4
+      - !PipConfig
+        dependencies: true
+      - !Py3Requirements requirements.txt
+commands:
+  run: !Command
+    description: Start server
+    container: django
+    run: python3 manage.py runserver
+  manage.py: !Command
+    description: Shortcut to manage.py
+    container: django
+    run: [python3, manage.py]
