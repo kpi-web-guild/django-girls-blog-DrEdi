@@ -18,8 +18,6 @@ SECRET_KEY = env('SECRET_KEY', default='u1^ao$3(lwk%g+i6+_)-e(1-f%^56dqq&0$*zlug
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -117,9 +115,3 @@ STATIC_ROOT = public_root('static')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = ['*']
-
-
-try:
-    from .local_settings import BASE_DIR, DATABASES, DEBUG  # noqa: F401
-except ImportError:
-    pass
