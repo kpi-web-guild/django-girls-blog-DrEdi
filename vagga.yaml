@@ -20,6 +20,8 @@ containers:
       - !Install
         - libpq
       - !Py3Requirements requirements.txt
+    environ:
+          DATABASE_URL: postgresql://vagga:vagga@127.0.0.1:5433/mainDB
   postgres:
     setup:
     - !Ubuntu xenial
@@ -74,8 +76,6 @@ commands:
     children:
       app: !Command
         container: django
-        environ:
-          DATABASE_URL: postgresql://vagga:vagga@127.0.0.1:5433/mainDB
         run: |
             python3 manage.py migrate
             python3 manage.py runserver --insecure
