@@ -68,7 +68,7 @@ commands:
         run: |
             python3 manage.py migrate
             python3 manage.py runserver --insecure
-  db: &run-db !Command
+  run-db: &run-db !Command
         container: postgres
         user-id: 200
         group-id: 200
