@@ -1,7 +1,7 @@
 {% extends 'main/base.html'%}
 
 {% block content %}
-    {% for post in posts %}
+    {% for post in object_list %}
         <div class="post">
             <div class="date">
                 <p>published: {{ post.published_date }}</p>
