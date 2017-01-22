@@ -1,7 +1,8 @@
 """
-Package for creating admin account.
+Fixture for admin account.
 
-When you run project with pgsqlDB, admin model
-automatically migrate to DB. After you can login with
-name and password you specify in settings.
+This will automatically add pre-configured admin account
+to your db during migration. Specify admin's email via
+ADMIN_EMAIL environment variable. The password is
+hardcoded to 12345678, don't forget to reset it.
 """
