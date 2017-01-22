@@ -21,7 +21,8 @@ containers:
         - libpq
       - !Py3Requirements requirements.txt
     environ:
-      environ-file: /work/blog/.env
+      DATABASE_URL: postgresql://vagga:vagga@127.0.0.1:5433/mainDB
+    environ-file: /work/blog/.env
   postgres:
     setup:
     - !Ubuntu xenial
