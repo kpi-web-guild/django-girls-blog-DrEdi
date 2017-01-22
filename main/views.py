@@ -4,6 +4,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404, redirect
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, View, DeleteView, TemplateView
+
 from .forms import CommentForm
 from .models import Post, Comment
 
@@ -14,13 +15,14 @@ class Protected(View):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         """Rewrite standart method and it to decorator."""
-        return super(Protected, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class PostList(ListView):
     """Show all your Post objects."""
 
     model = Post
+    context_object_name = 'posts'
     template_name = 'main/index.html'
 
 
@@ -42,7 +44,7 @@ class NewPost(CreateView):
     def form_valid(self, form):
         """Add info to form that were not given from POST request."""
         form.instance.author = self.request.user
-        return super(NewPost, self).form_valid(form)
+        return super().form_valid(form)
 
 
 class EditPost(UpdateView, Protected):
@@ -58,6 +60,7 @@ class PostDraftList(ListView, Protected):
     """Return draft list."""
 
     queryset = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+    context_object_name = 'posts'
     template_name = 'main/post_draft_list.html'
 
 
