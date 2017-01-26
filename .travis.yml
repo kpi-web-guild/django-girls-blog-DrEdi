@@ -28,4 +28,4 @@ before_install: 'echo ubuntu-mirror: http://mirrors.us.kernel.org/ubuntu/ > ~/.v
 
 install: vagga _build test
 
-script: vagga pre-commit --all-files
+script: vagga test
