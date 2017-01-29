@@ -17,6 +17,7 @@ def post_detail(request, pk):
     return render(request, 'main/post_detail.html', {'post': post})
 
 
+@login_required
 def post_new(request):
     """Return page for adding new Post."""
     if request.method == 'POST':
