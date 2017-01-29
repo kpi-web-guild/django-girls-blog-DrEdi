@@ -23,7 +23,7 @@ containers:
         - libpq
       - !Py3Requirements requirements.txt
     environ:
-      DATABASE_URL: postgresql://vagga:vagga@127.0.0.1:5433/mainDB
+      DATABASE_URL: sqlite://vagga:vagga@127.0.0.1:5433/mainDB
     environ-file: /work/blog/.env
   postgres:
     setup:
@@ -98,7 +98,7 @@ commands:
   test: !Command
     description: Run tests
     container: test
-    run: pre-commit run --all-files
+    run: python3 manage.py test
   pre-commit: !Command
     description: Run pre-commit
     container: test
