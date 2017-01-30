@@ -102,4 +102,4 @@ commands:
   lint: !Command
     description: Run pre-commit
     container: test
-    run: pre-commit run --all-files
+    run: [pre-commit, run]
