@@ -12,7 +12,7 @@ containers:
         - 'whitenoise >=3.2,<3.3'
         - 'django-environ >=0.4,<0.5'
         - 'psycopg2 >=2.6,<2.7'
-      - !Sh pip freeze > requirements.txt
+      - !Sh pip freeze > requirements/requirements.txt
   django:
     setup:
       - !Alpine v3.4
@@ -21,7 +21,7 @@ containers:
         dependencies: true
       - !Install
         - libpq
-      - !Py3Requirements requirements.txt
+      - !Py3Requirements requirements/requirements.txt
     environ:
       DATABASE_URL: sqlite://vagga:vagga@127.0.0.1:5433/mainDB
     environ-file: /work/blog/.env
@@ -58,7 +58,7 @@ containers:
         dependencies: true
       - !Install [git]
       - !Depends .pre-commit-config.yaml
-      - !Py3Requirements requirements-test.txt
+      - !Py3Requirements requirements/requirements-test.txt
       - !Py3Install [setuptools]
       - !Sh HOME=/root pre-commit install-hooks
 commands:
