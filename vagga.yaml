@@ -99,7 +99,7 @@ commands:
     description: Run tests
     container: test
     run: python3 manage.py test
-  pre-commit: !Command
+  lint: !Command
     description: Run pre-commit
     container: test
-    run: [pre-commit, run]
+    run: pre-commit run --all-files
