@@ -1,5 +1,4 @@
-Django==1.9.12
-django-environ==0.4.1
+-r requirements.txt
 gunicorn==19.5.0
 psycopg2==2.6.2
 whitenoise==3.2.3
