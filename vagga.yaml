@@ -23,7 +23,7 @@ containers:
         - libpq
       - !Py3Requirements requirements/requirements.txt
     environ:
-      DATABASE_URL: sqlite://vagga:vagga@127.0.0.1:5433/mainDB
+      DATABASE_URL: postgresql://vagga:vagga@127.0.0.1:5433/mainDB
     environ-file: /work/blog/.env
   postgres:
     setup:
