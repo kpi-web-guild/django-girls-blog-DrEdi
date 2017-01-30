@@ -20,8 +20,8 @@ class ViewsTest(TestCase):
         post = Post.objects.create(author=self.admin, title='Test', text='superText', created_date=timezone.now())
         post.publish()
         response = self.client.get('/')
+        self.assertIsInstance(response.context['posts'][0], Post)
         self.assertEqual(200, response.status_code)
-        print(response.resolver_match)
 
     def test_detail_view(self):
         """Testing detail page when post is not exist and when it exists."""
