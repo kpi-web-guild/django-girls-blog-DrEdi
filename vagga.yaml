@@ -98,7 +98,7 @@ commands:
   test: !Command
     description: Run tests
     container: test
-    run: python3 manage.py test
+    run: python3 manage.py test -v3
   lint: !Command
     description: Run linters
     container: test
