@@ -21,7 +21,6 @@ class ModelTest(TestCase):
 
     def test_post_publish_method(self):
         """Publish method working ok."""
-        self.assertIsNone(self.test_post.published_date)
         self.test_post.publish()
         self.assertLessEqual(self.test_post.published_date, timezone.now())
 
