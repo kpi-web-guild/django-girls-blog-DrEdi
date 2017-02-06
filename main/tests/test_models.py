@@ -1,4 +1,6 @@
 """Tests for models."""
+import unittest.mock
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
@@ -19,10 +21,11 @@ class ModelTest(TestCase):
         """Post is rendered as its title."""
         self.assertEqual(str(self.test_post), self.test_post.title)
 
+    @unittest.mock.patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=2016))
     def test_post_publish_method(self):
         """Publish method working ok."""
         self.test_post.publish()
-        self.assertLessEqual(self.test_post.published_date, timezone.now())
+        self.assertLess(self.test_post.published_date, datetime.now())
 
     def test_comment_rendering(self):
         """Comment is rendered as its title."""
