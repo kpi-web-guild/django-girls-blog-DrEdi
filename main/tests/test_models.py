@@ -9,13 +9,13 @@ from django.utils import timezone
 from main.models import Post, Comment
 
 
-class ModelTest(TestCase):
-    """Main class for testing models of this project."""
+class ModelTestPost(TestCase):
+    """Main class for post testing models of this project."""
 
     def setUp(self):
         """Prepare data for testing."""
-        self.admin = User.objects.create(username='testuser')
-        self.test_post = Post.objects.create(author=self.admin, title='Test', text='superText',
+        self.user = User.objects.create(username='testuser')
+        self.test_post = Post.objects.create(author=self.user, title='Test', text='superText',
                                              created_date=timezone.now())
 
     def test_post_rendering(self):
@@ -28,12 +28,29 @@ class ModelTest(TestCase):
         self.test_post.publish()
         self.assertLess(self.test_post.published_date, datetime.now())
 
+    def tearDown(self):
+        """Clean data for new test."""
+        del self.user
+        del self.test_post
+
+
+class ModelTestComment(TestCase):
+    """Main class for testing comment models of this project."""
+
+    def setUp(self):
+        """Prepare data for testing."""
+        self.user = User.objects.create(username='testuser')
+        self.test_post = Post.objects.create(author=self.user, title='Test', text='superText',
+                                             created_date=timezone.now())
+        self.comment = Comment.objects.create(post=self.test_post, author=self.user, text='superComment',
+                                              created_date=timezone.now(), is_approved=False)
+
     def test_comment_rendering(self):
         """Comment is rendered as its title."""
-        self.comment = Comment.objects.create(post=self.test_post, author=self.admin, text='superComment',
-                                              created_date=timezone.now(), is_approved=False)
         self.assertEqual(str(self.comment), self.comment.text)
 
     def tearDown(self):
         """Clean data for new test."""
-        del self.admin
+        del self.user
+        del self.test_post
+        del self.comment
