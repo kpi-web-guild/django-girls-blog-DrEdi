@@ -27,6 +27,8 @@ class ModelTestPost(TestCase):
         """Publish method working ok."""
         self.test_post.publish()
         self.assertLess(self.test_post.published_date, datetime.now())
+        self.assertEqual(self.test_post.published_date, datetime(day=1, month=4, year=2016))
+        self.assertLess(datetime(day=1, month=4, year=2015), self.test_post.published_date)
 
     def tearDown(self):
         """Clean data for new test."""
