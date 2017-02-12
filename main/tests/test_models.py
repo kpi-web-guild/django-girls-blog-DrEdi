@@ -42,7 +42,8 @@ class ModelCommentTest(TestCase):
         """Prepare data for testing."""
         self.user = User.objects.create(username='testuser')
         self.test_post = Post.objects.create(author=self.user, title='Test', text='superText')
-        self.comment = Comment.objects.create(post=self.test_post, author=self.user.username, text='superComment')
+        self.comment = Comment.objects.create(post=self.test_post, author=self.user.username, text='superComment',
+                                              is_approved=False)
 
     def test_comment_rendering(self):
         """Comment is rendered as its title."""
@@ -50,7 +51,8 @@ class ModelCommentTest(TestCase):
 
     def test_comment_approve(self):
         """Audit for right work of publish method in comment models."""
-        self.assertFalse(self.comment.is_approved)
+        self.comment.approve()
+        self.assertTrue(self.comment.is_approved)
         self.comment.approve()
         self.assertTrue(self.comment.is_approved)
 
