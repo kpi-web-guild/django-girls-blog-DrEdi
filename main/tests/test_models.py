@@ -9,26 +9,25 @@ from django.utils import timezone
 from main.models import Post, Comment
 
 
-class ModelTestPost(TestCase):
-    """Main class for post testing models of this project."""
+class ModelPostTest(TestCase):
+    """Main class for testing Post models of this project."""
 
     def setUp(self):
         """Prepare data for testing."""
         self.user = User.objects.create(username='testuser')
-        self.test_post = Post.objects.create(author=self.user, title='Test', text='superText',
-                                             created_date=timezone.now())
+        self.test_post = Post.objects.create(author=self.user, title='Test', text='superText')
 
     def test_post_rendering(self):
         """Post is rendered as its title."""
         self.assertEqual(str(self.test_post), self.test_post.title)
 
-    @patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=2016))
+    @patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=2016,
+                                                         tzinfo=timezone.get_current_timezone()))
     def test_post_publish_method(self):
         """Publish method working ok."""
         self.test_post.publish()
-        self.assertLess(self.test_post.published_date, datetime.now())
-        self.assertEqual(self.test_post.published_date, datetime(day=1, month=4, year=2016))
-        self.assertLess(datetime(day=1, month=4, year=2015), self.test_post.published_date)
+        self.assertEqual(self.test_post.published_date, datetime(day=1, month=4, year=2016,
+                                                                 tzinfo=timezone.get_current_timezone()))
 
     def tearDown(self):
         """Clean data for new test."""
@@ -36,20 +35,24 @@ class ModelTestPost(TestCase):
         del self.test_post
 
 
-class ModelTestComment(TestCase):
-    """Main class for testing comment models of this project."""
+class ModelCommentTest(TestCase):
+    """Main class for testing Comment models of this project."""
 
     def setUp(self):
         """Prepare data for testing."""
         self.user = User.objects.create(username='testuser')
-        self.test_post = Post.objects.create(author=self.user, title='Test', text='superText',
-                                             created_date=timezone.now())
-        self.comment = Comment.objects.create(post=self.test_post, author=self.user, text='superComment',
-                                              created_date=timezone.now(), is_approved=False)
+        self.test_post = Post.objects.create(author=self.user, title='Test', text='superText')
+        self.comment = Comment.objects.create(post=self.test_post, author=self.user.username, text='superComment')
 
     def test_comment_rendering(self):
         """Comment is rendered as its title."""
         self.assertEqual(str(self.comment), self.comment.text)
+
+    def test_comment_approve(self):
+        """Audit for right work of publish method in comment models."""
+        self.assertFalse(self.comment.is_approved)
+        self.comment.approve()
+        self.assertTrue(self.comment.is_approved)
 
     def tearDown(self):
         """Clean data for new test."""
