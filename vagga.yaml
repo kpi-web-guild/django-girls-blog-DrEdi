@@ -1,18 +1,24 @@
 minimum-vagga: v0.7.0
 containers:
-  pip-freeze:
+  pip-freeze-main:
+    setup:
+      - !Alpine v3.4
+      - !Py3Install
+        - pip
+        - 'Django >=1.9,<1.10'
+        - 'django-environ >=0.4,<0.5'
+      - !Sh pip freeze > requirements/main.txt
+  pip-freeze-production:
     setup:
       - !Alpine v3.4
       - &django-build !BuildDeps
         - postgresql-dev
       - !Py3Install
         - pip
-        - 'Django >=1.9,<1.10'
         - 'gunicorn >=19.5,<19.6'
         - 'whitenoise >=3.2,<3.3'
-        - 'django-environ >=0.4,<0.5'
         - 'psycopg2 >=2.6,<2.7'
-      - !Sh pip freeze > requirements/main.txt
+      - !Sh echo '-r main.txt' > requirements/production.txt & pip freeze >> requirements/production.txt
   django:
     setup:
       - !Alpine v3.4
