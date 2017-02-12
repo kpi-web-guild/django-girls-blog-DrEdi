@@ -18,7 +18,8 @@ containers:
         - 'gunicorn >=19.5,<19.6'
         - 'whitenoise >=3.2,<3.3'
         - 'psycopg2 >=2.6,<2.7'
-      - !Sh echo '-r main.txt' > requirements/production.txt & pip freeze >> requirements/production.txt
+      - !Sh echo '-r main.txt' > requirements/production.txt
+      - !Sh pip freeze >> requirements/production.txt
   django:
     setup:
       - !Alpine v3.4
