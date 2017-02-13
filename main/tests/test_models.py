@@ -51,6 +51,7 @@ class ModelCommentTest(TestCase):
 
     def test_comment_approve(self):
         """Audit for right work of publish method in comment models."""
+        self.comment.is_approved = False
         self.comment.approve()
         self.assertTrue(self.comment.is_approved)
         self.comment.approve()

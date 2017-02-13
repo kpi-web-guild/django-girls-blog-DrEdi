@@ -12,7 +12,6 @@ containers:
       - !Sh pip freeze > requirements/main.txt
       - !Sh pip uninstall -r requirements/main.txt --yes
       - !Py3Install
-        - pip
         - 'gunicorn >=19.5,<19.6'
         - 'whitenoise >=3.2,<3.3'
         - 'psycopg2 >=2.6,<2.7'
