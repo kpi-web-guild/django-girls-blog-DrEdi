@@ -1,7 +1,12 @@
 """Tests for views are at this file."""
+from unittest.mock import patch
+from unittest import expectedFailure
+from datetime import datetime
+
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 
 from main.models import Post, Comment
 
@@ -18,14 +23,31 @@ class ViewsTest(TestCase):
         self.user = User.objects.create(username='testuser', password='blablabla', is_superuser=True, is_staff=True,
                                         email='testuser@gmail.com', is_active=True)
 
+    @expectedFailure
+    def test_index_view_rendering(self):
+        """Testing main page for render needed posts."""
+        tz = timezone.get_current_timezone()
+        post = Post.objects.create(author=self.user, title='Test', text='superText',
+                                   created_date=datetime(day=1, month=3, year=2016, tzinfo=tz))
+        past_post = Post.objects.create(author=self.user, title='past_est', text='superText',
+                                        created_date=datetime(day=1, month=4, year=2015, tzinfo=tz))
+        future_post = Post.objects.create(author=self.user, title='future_test', text='superText',
+                                          created_date=datetime(day=1, month=4, year=2116, tzinfo=tz))
+        with patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=2016, tzinfo=tz)) as test_mock:
+            post.publish()
+            future_post.publish()
+            past_post.publish()
+            test_mock.assert_called_with()
+            response = self.client.get(reverse('post_list'))
+            self.assertContains(response, post.title)
+            self.assertContains(response, past_post.title)
+            self.assertContains(response, future_post)
+
     def test_index_view(self):
         """Testing main page."""
-        post = Post.objects.create(author=self.user, title='Test', text='superText')
-        post.publish()
         response = self.client.get(reverse('post_list'))
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'main/index.html')
-        self.assertContains(response, 'Test')
 
     def test_detail_view(self):
         """Testing detail page when post is not exist and when it exists."""

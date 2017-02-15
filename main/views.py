@@ -1,4 +1,5 @@
 """All views are here."""
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
@@ -7,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 def post_list(request):
     """Show all your Post objects."""
-    posts = Post.objects.all()
+    posts = Post.objects.filter(created_date__lt=timezone.now())
     return render(request, 'main/index.html', {'posts': posts})
 
 
