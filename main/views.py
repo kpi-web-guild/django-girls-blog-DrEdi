@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 def post_list(request):
     """Show all your Post objects."""
-    posts = Post.objects.filter(created_date__lt=timezone.now())
+    posts = Post.objects.filter(published_date__lte=timezone.now())
     return render(request, 'main/index.html', {'posts': posts})
 
 
