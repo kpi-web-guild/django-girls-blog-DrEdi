@@ -36,23 +36,19 @@ class ViewsTest(TestCase):
                                           published_date=datetime(day=1, month=4, year=2116, tzinfo=tz))
         with patch('django.utils.timezone.now', lambda: datetime(day=1, month=1, year=2016, tzinfo=tz)):
             response = self.client.get(reverse('post_list'))
-            self.assertContains(response, past_post)
+            self.assertListEqual(list(response.context['posts']), [past_post])
             self.assertNotContains(response, post)
             self.assertNotContains(response, future_post)
         with patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=2016, tzinfo=tz)):
             response = self.client.get(reverse('post_list'))
-            self.assertContains(response, past_post)
-            self.assertContains(response, post)
+            self.assertListEqual(list(response.context['posts']), [post, past_post])
             self.assertNotContains(response, future_post)
         with patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=3016, tzinfo=tz)):
             response = self.client.get(reverse('post_list'))
-            self.assertContains(response, past_post.title)
-            self.assertContains(response, post)
-            self.assertContains(response, future_post)
+            self.assertListEqual(list(response.context['posts']), [post, past_post, future_post])
         response = self.client.get(reverse('post_list'))
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'main/index.html')
-        self.assertListEqual(list(response.context['posts']), [post, past_post])
 
     def test_detail_view(self):
         """Testing detail page when post is not exist and when it exists."""
