@@ -49,6 +49,9 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse('post_list'))
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed(response, 'main/index.html')
+        self.assertContains(response, post)
+        self.assertContains(response, past_post)
+        self.assertNotContains(response, future_post)
 
     def test_detail_view(self):
         """Testing detail page when post is not exist and when it exists."""
