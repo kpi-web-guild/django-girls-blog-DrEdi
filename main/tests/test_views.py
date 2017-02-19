@@ -115,7 +115,7 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse('post_remove', kwargs={'pk': 1}))
         self.assertEqual(404, response.status_code)
         post = Post.objects.create(author=self.user, title='Test', text='superText')
-        response = self.client.get(reverse('post_remove', kwargs={'pk': post.pk}), follow=True)
+        response = self.client.post(reverse('post_remove', kwargs={'pk': post.pk}), follow=True)
         self.assertRedirects(response, reverse('post_list'))
 
     def test_add_comment(self):
@@ -142,7 +142,7 @@ class ViewsTest(TestCase):
         self.comment = Comment.objects.create(post=self.post, author=self.user, text='superComment')
         authorization = self.client.login(username=self.USERNAME, password=self.PASSWORD)
         self.assertTrue(authorization)
-        response = self.client.get(reverse('comment_remove', kwargs={'pk': self.comment.pk}), follow=True)
+        response = self.client.post(reverse('comment_remove', kwargs={'pk': self.comment.pk}), follow=True)
         self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
 
     def tearDown(self):

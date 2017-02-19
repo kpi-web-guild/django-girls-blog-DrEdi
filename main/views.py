@@ -1,11 +1,12 @@
 """All views are here."""
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404, redirect
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, View, DeleteView, TemplateView
 
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from .models import Post, Comment
 
 
@@ -21,9 +22,12 @@ class Protected(View):
 class PostList(ListView):
     """Show all your Post objects."""
 
-    model = Post
     context_object_name = 'posts'
     template_name = 'main/index.html'
+
+    def get_queryset(self):
+        """Return needed posts."""
+        return Post.objects.filter(published_date__lte=timezone.now())
 
 
 class PostDetail(DetailView):
@@ -33,18 +37,26 @@ class PostDetail(DetailView):
     template_name = 'main/post_detail.html'
 
 
-class NewPost(CreateView):
+class NewPost(CreateView, Protected):
     """Return page for adding new Post."""
 
     model = Post
     fields = ['title', 'text']
-    success_url = reverse_lazy('post_list')
     template_name = 'main/post_edit.html'
 
     def form_valid(self, form):
         """Add info to form that were not given from POST request."""
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        """Rewritten post method for saving the form."""
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('post_detail', pk=post.pk)
 
 
 class EditPost(UpdateView, Protected):
@@ -114,5 +126,11 @@ class RemoveComment(Protected, DeleteView):
     """Remove comment."""
 
     model = Comment
-    success_url = reverse_lazy('post_list')
     template_name = 'main/post_edit.html'
+
+    def post(self, request, *args, **kwargs):
+        """Rewritten standart method."""
+        comment = get_object_or_404(Comment, pk=kwargs['pk'])
+        post_pk = comment.post.pk
+        comment.delete()
+        return redirect('post_detail', pk=post_pk)
