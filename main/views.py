@@ -24,10 +24,7 @@ class PostList(ListView):
 
     context_object_name = 'posts'
     template_name = 'main/index.html'
-
-    def get_queryset(self):
-        """Return needed posts."""
-        return Post.objects.filter(published_date__lte=timezone.now())
+    queryset = Post.objects.filter(published_date__lte=timezone.now())
 
 
 class PostDetail(DetailView):
@@ -50,7 +47,7 @@ class NewPost(CreateView, Protected):
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
-        """Rewritten post method for saving the form."""
+        """Get info from form and save it as 'post' object."""
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
