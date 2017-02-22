@@ -24,7 +24,10 @@ class PostList(ListView):
 
     context_object_name = 'posts'
     template_name = 'main/index.html'
-    queryset = Post.objects.filter(published_date__lte=timezone.now())
+
+    def get_queryset(self):
+        """Return needed posts."""
+        return Post.objects.filter(published_date__lte=timezone.now())
 
 
 class PostDetail(DetailView):
@@ -100,13 +103,13 @@ class AddCommentToPost(CreateView):
 
     def post(self, request, *args, **kwargs):
         """Add comment to DB."""
-        my_post = get_object_or_404(Post, pk=kwargs['pk'])
+        post = get_object_or_404(Post, pk=kwargs['pk'])
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = my_post
+            comment.post = post
             comment.save()
-            return redirect('post_detail', pk=my_post.pk)
+            return redirect('post_detail', pk=post.pk)
 
 
 class ApproveComment(Protected, TemplateView):
