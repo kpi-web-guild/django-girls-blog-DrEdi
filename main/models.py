@@ -33,7 +33,7 @@ class Post(models.Model):
 class Comment(models.Model):
     """Model for comments."""
 
-    post = models.ForeignKey('main.Post', related_name='comments')
+    post = models.ForeignKey('main.Post', related_name='comments', on_delete=models.CASCADE)
     author = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)

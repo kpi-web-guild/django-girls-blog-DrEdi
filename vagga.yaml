@@ -25,7 +25,7 @@ containers:
         dependencies: true
       - !Install
         - libpq
-      - !Py3Requirements requirements/main.txt
+      - !Py3Requirements requirements/production.txt
     environ:
       DATABASE_URL: postgresql://vagga:vagga@127.0.0.1:5433/mainDB
     environ-file: /work/blog/.env
